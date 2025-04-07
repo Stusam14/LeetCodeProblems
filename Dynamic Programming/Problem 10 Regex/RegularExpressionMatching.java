@@ -1,21 +1,20 @@
-import java.util.regex.*;
-
 class Solution {
     public boolean isMatch(String s, String p) {
-        Pattern pattern = Pattern.compile(p);
-        Matcher match = pattern.matcher(s);
 
+        return dfs(s,p,0,0);
+        
+    }
 
-        if(Pattern.matches("[^*.]",p)){
-            return false;
-        }
-        if(pattern.pattern().length()!=s.length()){
-            return false;
-        }
+    public boolean dfs(String s, String p,int i, int j){
+        
+        if(j == p.length()) return i == s.length();
 
-        if(match.find()){
-            return true;
+        boolean matchChar = (i < s.length() ) && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.');
+
+        if(j+1 < p.length() && p.charAt(j+1) == '*'){
+            return (matchChar&&dfs(s,p,i+1,j))||dfs(s,p,i,j+2);
+        }else{
+            return matchChar&&dfs(s,p,i+1,j+1);
         }
-        return false;
     }
 }
